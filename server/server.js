@@ -5,13 +5,23 @@ import connectDB from "./configs/db.js";
 import adminRouter from "./routes/adminRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
+import cookieParser from "cookie-parser";
+import authRouter from './routes/authRoutes.js'
+import userRouter from "./routes/userRoutes.js";
+
 
 const app = express();
 
 await connectDB();
 
 // Middleware
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173",  // or your frontend URL
+  credentials: true
+}));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.json())
 
 
@@ -20,6 +30,8 @@ app.get('/', (req, res) => res.send("API is Working Now !!"));
 app.use('/api/admin', adminRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/email', emailRoutes);
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 
 const PORT = process.env.PORT || 3000;

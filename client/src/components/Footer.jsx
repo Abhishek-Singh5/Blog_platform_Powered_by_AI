@@ -57,8 +57,8 @@ function Footer() {
 
       {/* Bottom Section */}
       <div className="mt-12 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm md:text-base border-t border-gray-300/40 pt-6 relative z-10">
-        <p>© {new Date().getFullYear()} <span className="font-semibold text-gray-800">QuickBlog</span> — All Rights Reserved.</p>
-        <p className="mt-3 md:mt-0">Designed with ❤️ by Abhishek Singh</p>
+        <p>© {new Date().getFullYear()} <span className="font-semibold text-gray-800">Verity</span> — All Rights Reserved.</p>
+        {/* <p className="mt-3 md:mt-0">Designed with ❤️ by Abhishek Singh</p> */}
       </div>
 
       {/* Blob animation styles */}

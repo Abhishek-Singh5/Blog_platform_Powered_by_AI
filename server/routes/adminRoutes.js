@@ -12,7 +12,5 @@ adminRouter.post("/approve-comment", auth, approveCommentById);
 adminRouter.get("/dashboard", auth, getDashboard);
 
 
-
-
 export default adminRouter;
 

@@ -15,7 +15,6 @@ import { useAppContext } from './context/AppContext';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-
 function App() {
 
   const {token} = useAppContext();
@@ -26,7 +25,12 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/blog/:id' element={<Blog/>} />
-        <Route path='/admin' element={token ?<Layout/> : <Login />} >
+
+        <Route path='/userlogin' element={<Login defaultRole="user" defaultMode="login" />} />
+        <Route path='/usersignup' element={<Login defaultRole="user" defaultMode="signup" />} />
+
+        <Route path='/admin' element={token ? <Layout /> : <Login defaultRole="admin" />} >
+        {/* <Route path='/admin' element={token ?<Layout/> : <Login />} > */}
           <Route index element={<Dashboard />} />
           <Route path='addBlog' element={<AddBlog />} />
           <Route path='listBlog' element={<ListBlog />} />

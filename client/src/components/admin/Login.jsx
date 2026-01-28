@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
-import AddBlog from "../../pages/admin/AddBlog";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login( { defaultRole = "admin", defaultMode = "login" } ) {
   const { axios, setToken } = useAppContext();
 
   const navigate = useNavigate();
   
   // States to manage UI flow
-  const [role, setRole] = useState("admin"); 
-  const [isSignup, setIsSignup] = useState(false);
+  const [role, setRole] = useState(defaultRole); 
+  const [isSignup, setIsSignup] = useState(defaultMode === "signup");
   
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +34,16 @@ function Login() {
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common["Authorization"] = data.token;
         toast.success(isSignup ? "Account created!" : "Login successfull!");
-      } else {
+        
+        if (role === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+        }
+      } 
+        
+      
+      else {
         toast.error(data.message);
       }
     } catch (error) {
@@ -57,13 +65,13 @@ function Login() {
         <div className="flex justify-center mb-8">
           <div className="relative flex bg-black/20 p-1 rounded-2xl border border-white/10 w-full">
             <button 
-              onClick={() => { setRole("admin"); setIsSignup(false); }}
+              onClick={() => { setRole("admin"); setIsSignup(false); navigate("/admin") }}
               className={`relative z-10 w-1/2 py-2 text-sm font-bold transition-colors duration-300 ${role === 'admin' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
             >
               Admin
             </button>
             <button 
-              onClick={() => setRole("user")}
+              onClick={() => {setRole("user"); setIsSignup(false); navigate("/userlogin")}}
               className={`relative z-10 w-1/2 py-2 text-sm font-bold transition-colors duration-300 ${role === 'user' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
             >
               User
@@ -143,7 +151,10 @@ function Login() {
           <p className="text-center text-gray-400 text-sm mt-6">
             {isSignup ? "Already have an account?" : "Don't have an account?"}
             <button 
-              onClick={() => setIsSignup(!isSignup)}
+              onClick={() => {
+                const next = !isSignup;
+                setIsSignup(next);
+                navigate(next ? "/usersignup" : "/userlogin");}}
               className="ml-2 text-blue-400 font-semibold hover:underline decoration-blue-400/50 underline-offset-4"
             >
               {isSignup ? "Login" : "Sign up"}

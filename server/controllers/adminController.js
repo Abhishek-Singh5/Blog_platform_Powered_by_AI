@@ -85,6 +85,35 @@ export const getDashboard = async (req, res) => {
 }
 
 
+export const recommendation = async (req, res) => {
+
+    try {
+
+        const recentBlogs = await Blog.aggregate([
+            { $sample: { size: 5 } }
+        ]);
+
+        const blogs = await Blog.countDocuments();
+        const comments = await Comment.countDocuments();
+        const subscribers  = await EmailModel.countDocuments();
+        const drafts = await Blog.countDocuments({ isPublished: false });
+
+        const dashboardData = {
+            blogs,
+            comments,
+            subscribers,
+            drafts,
+            recentBlogs,
+        }
+
+        res.json({ success: true, dashboardData });
+        
+    } catch (error) {
+
+        res.json({ success: false, message: error.message });
+        
+    }
+}
 
 
 

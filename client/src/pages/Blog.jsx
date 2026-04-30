@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 import { useAppContext } from '../context/AppContext';
 import Moment from "moment";
 import toast from 'react-hot-toast';
+import BlogList from '../components/BlogList';
 
 function Blog() {
   const { id } = useParams();
@@ -16,6 +17,8 @@ function Blog() {
   const [comments, setComments] = useState([]);
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
+
+  const [recommendedBlogs, setRecommendedBlogs] = useState([]);
 
   const fetchBlogData = async () => {
     try {
@@ -51,9 +54,25 @@ function Blog() {
     }
   };
 
+  const fetchRecommendedBlogs = async () => {
+  try {
+    const { data } = await axios.get('/api/admin/recommendations'); 
+    // make sure this route points to getDashboard controller
+
+    if (data.success) {
+      setRecommendedBlogs(data.dashboardData.recentBlogs);
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
   useEffect(() => {
     fetchBlogData();
     fetchComments();
+    fetchRecommendedBlogs();
   }, []);
 
   return data ? (
@@ -147,6 +166,45 @@ function Blog() {
             </button>
           </form>
         </div>
+
+                  <div className="max-w-5xl mx-auto mt-16">
+            <h1 className="text-2xl font-bold mb-6 text-gray-800">
+              📌 Recommended Blogs
+            </h1>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedBlogs.map((blog) => (
+                <div
+                  key={blog._id}
+                  className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+                >
+                  <img
+                    src={blog.image}
+                    alt=""
+                    className="h-48 w-full object-cover"
+                  />
+                  <div className="p-4">
+                    <p className="text-sm text-gray-500">
+                      {Moment(blog.createdAt).fromNow()}
+                    </p>
+                    <h2 className="text-lg font-semibold text-gray-800 mt-2">
+                      {blog.title}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                      {blog.subTitle}
+                    </p>
+
+                    <a
+                      href={`/blog/${blog._id}`}
+                      className="inline-block mt-3 text-primary font-medium hover:underline"
+                    >
+                      Read More →
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
         {/* Share Buttons */}
         <div className="my-24 max-w-3xl mx-auto text-center">

@@ -47,7 +47,7 @@ function Sidebar() {
       </div>
 
       <div className="text-center text-sm text-gray-500 mb-4">
-        © 2025 Blog Admin
+        © 2026 Blog Admin
       </div>
     </div>
   );

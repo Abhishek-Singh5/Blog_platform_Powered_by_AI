@@ -8,6 +8,8 @@ import emailRoutes from "./routes/emailRoutes.js";
 import cookieParser from "cookie-parser";
 import authRouter from './routes/authRoutes.js'
 import userRouter from "./routes/userRoutes.js";
+// import interractionRoutes from "./routes/interaction.route.js"
+// import recommendationRoutes from "./routes/recommendation.route.js";
 
 
 const app = express();
@@ -32,6 +34,9 @@ app.use('/api/blog', blogRouter);
 app.use('/api/email', emailRoutes);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
+// app.use("/api/interaction",     interactionRoutes);
+// app.use("/api/recommendations", recommendationRoutes);
 
 
 const PORT = process.env.PORT || 3000;
